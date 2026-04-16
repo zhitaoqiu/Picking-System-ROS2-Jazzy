@@ -1,0 +1,29 @@
+<root BTCPP_format="4">
+  <BehaviorTree ID="MainTree">
+    <Sequence name="picking_sequence">
+      
+      <GripperControl action="open" />
+      
+      <ActivateCamera />
+      
+      <Delay delay_msec="3000">
+         <AlwaysSuccess />
+      </Delay>
+      
+      <ExecuteGrasp action="plunge" />
+      
+      <Delay delay_msec="1500">
+         <AlwaysSuccess />
+      </Delay>
+      
+      <GripperControl action="close" />
+      
+      <Delay delay_msec="1000">
+         <AlwaysSuccess />
+      </Delay>
+
+      <ExecuteGrasp action="lift" />
+      
+    </Sequence>
+  </BehaviorTree>
+</root>
