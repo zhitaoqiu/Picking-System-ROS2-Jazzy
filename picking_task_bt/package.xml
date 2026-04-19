@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>picking_task_bt</name>
+  <version>0.0.1</version>
+  <description>BehaviorTree mode switching for servo-to-admittance peg-in-hole.</description>
+
+  <maintainer email="qiuzhitao94@gmail.com">qiuzhitao</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>ament_index_cpp</depend>
+  <depend>behaviortree_cpp</depend>
+  <depend>controller_manager_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>moveit_msgs</depend>
+  <depend>rclcpp</depend>
+  <depend>std_msgs</depend>
+  <depend>std_srvs</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

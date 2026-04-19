@@ -1,0 +1,28 @@
+panda_joint1:
+  p: 120.0
+  i: 0.0
+  d: 8.0
+panda_joint2:
+  p: 120.0
+  i: 0.0
+  d: 8.0
+panda_joint3:
+  p: 120.0
+  i: 0.0
+  d: 8.0
+panda_joint4:
+  p: 120.0
+  i: 0.0
+  d: 8.0
+panda_joint5:
+  p: 90.0
+  i: 0.0
+  d: 6.0
+panda_joint6:
+  p: 60.0
+  i: 0.0
+  d: 4.0
+panda_joint7:
+  p: 30.0
+  i: 0.0
+  d: 2.0

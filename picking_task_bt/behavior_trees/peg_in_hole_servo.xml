@@ -1,0 +1,25 @@
+<root BTCPP_format="4">
+  <BehaviorTree ID="PegInHoleServo">
+    <Sequence name="main_sequence">
+      <PublishPhase value="free_space_servo"/>
+      <StartServo command_type="pose"/>
+      <PauseServo pause="false"/>
+
+      <PublishPose frame_id="panda_link0" x="0.45" y="0.0" z="0.28" qx="1.0" qy="0.0" qz="0.0" qw="0.0"/>
+      <WaitMs milliseconds="2000"/>
+
+      <PublishPhase value="pre_contact"/>
+      <PauseServo pause="true"/>
+      <SwitchControllers activate="admittance_controller" deactivate="arm_velocity_controller"/>
+      <PublishPhase value="compliant_insert"/>
+      <WaitMs milliseconds="3000"/>
+
+      <SwitchControllers activate="arm_velocity_controller" deactivate="admittance_controller"/>
+      <PauseServo pause="false"/>
+      <PublishPhase value="retract"/>
+      <PublishPose frame_id="panda_link0" x="0.45" y="0.0" z="0.40" qx="1.0" qy="0.0" qz="0.0" qw="0.0"/>
+      <WaitMs milliseconds="2000"/>
+      <PublishPhase value="done"/>
+    </Sequence>
+  </BehaviorTree>
+</root>

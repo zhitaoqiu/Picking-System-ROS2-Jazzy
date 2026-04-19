@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dds xmlns="http://www.eprosima.com/XMLSchemas/fastRTPS_Profiles">
+  <profiles>
+    <publisher profile_name="default_publisher" is_default_profile="true">
+      <qos>
+        <reliability>
+          <kind>RELIABLE</kind>
+        </reliability>
+      </qos>
+    </publisher>
+  </profiles>
+</dds>

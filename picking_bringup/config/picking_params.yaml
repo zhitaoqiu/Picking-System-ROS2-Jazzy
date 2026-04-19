@@ -1,0 +1,10 @@
+peg_in_hole:
+  pre_approach_pose:
+    frame_id: panda_link0
+    position: [0.45, 0.00, 0.28]
+    orientation_xyzw: [1.0, 0.0, 0.0, 0.0]
+  retract_pose:
+    frame_id: panda_link0
+    position: [0.45, 0.00, 0.40]
+    orientation_xyzw: [1.0, 0.0, 0.0, 0.0]
+  admittance_hold_seconds: 3.0
