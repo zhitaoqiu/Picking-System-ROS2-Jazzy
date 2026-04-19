@@ -3,7 +3,7 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "geometry_msgs/msg/pose.hpp"
-#include <moveit/move_group_interface/move_group_interface.h>
+#include <moveit/move_group_interface/move_group_interface.hpp>
 namespace picking_system_core
 {
 

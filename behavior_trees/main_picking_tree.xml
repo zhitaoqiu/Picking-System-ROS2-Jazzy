@@ -1,29 +1,35 @@
+<?xml version="1.0"?>
+<!--
+  peg-in-hole 任务行为树
+  流程：
+    1. 启用控制器
+    2. 发布目标位姿（孔的位置）
+    3. approach：移动到孔上方
+    4. insert：垂直插入
+    5. retract：抬升退出
+-->
 <root BTCPP_format="4">
   <BehaviorTree ID="MainTree">
-    <Sequence name="picking_sequence">
-      
-      <GripperControl action="open" />
-      
-      <ActivateCamera />
-      
-      <Delay delay_msec="3000">
-         <AlwaysSuccess />
-      </Delay>
-      
-      <ExecuteGrasp action="plunge" />
-      
-      <Delay delay_msec="1500">
-         <AlwaysSuccess />
-      </Delay>
-      
-      <GripperControl action="close" />
-      
-      <Delay delay_msec="1000">
-         <AlwaysSuccess />
-      </Delay>
+    <Sequence name="peg_in_hole_sequence">
 
-      <ExecuteGrasp action="lift" />
-      
+      <!-- 步骤1：启用 Pinocchio 控制器 -->
+      <ActivateCamera />
+
+      <!-- 步骤2：发布目标位姿（孔中心坐标） -->
+      <DetectTarget
+        target_x="0.50"
+        target_y="0.00"
+        target_z="0.35" />
+
+      <!-- 步骤3：移动到孔上方待机 -->
+      <ExecuteGrasp action="approach" />
+
+      <!-- 步骤4：对准后垂直插入 -->
+      <ExecuteGrasp action="insert" />
+
+      <!-- 步骤5：插入完成，抬升退出 -->
+      <ExecuteGrasp action="retract" />
+
     </Sequence>
   </BehaviorTree>
 </root>

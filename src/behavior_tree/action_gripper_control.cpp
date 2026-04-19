@@ -2,33 +2,51 @@
 
 namespace picking_system_core
 {
-GripperControl::GripperControl(const std::string& name, const BT::NodeConfig& config, rclcpp::Node::SharedPtr node)
-  : BT::SyncActionNode(name, config), ros_node_(node) {}
+
+GripperControl::GripperControl(
+  const std::string & name,
+  const BT::NodeConfig & config,
+  rclcpp::Node::SharedPtr node)
+: BT::SyncActionNode(name, config), ros_node_(node)
+{
+  gripper_pub_ = ros_node_->create_publisher<sensor_msgs::msg::JointState>(
+    "/franka/joint_command", 10);
+}
+
+BT::PortsList GripperControl::providedPorts()
+{
+  return {BT::InputPort<std::string>("action", "open", "open 或 close")};
+}
 
 BT::NodeStatus GripperControl::tick()
 {
   std::string action;
-  if (!getInput<std::string>("action", action)) {
+  getInput("action", action);
+
+  sensor_msgs::msg::JointState msg;
+  msg.header.stamp = ros_node_->get_clock()->now();
+
+  // 只发夹爪指令：position[7] = 255(闭合) 或 0(张开)
+  // mujoco_bridge 里判断 len >= 8 才写 ctrl[7]
+  msg.position.resize(8, 0.0);
+
+  if (action == "open") {
+    msg.position[7] = 0.0;   // 张开
+    RCLCPP_INFO(ros_node_->get_logger(), "[GripperControl] 张开夹爪");
+  } else if (action == "close") {
+    msg.position[7] = 255.0; // 闭合
+    RCLCPP_INFO(ros_node_->get_logger(), "[GripperControl] 闭合夹爪");
+  } else {
+    RCLCPP_ERROR(ros_node_->get_logger(), "[GripperControl] 未知动作: %s", action.c_str());
     return BT::NodeStatus::FAILURE;
   }
 
-  auto client = ros_node_->create_client<std_srvs::srv::SetBool>("/switch_gripper");
-  
-  RCLCPP_INFO(ros_node_->get_logger(), "[行为树] 正在请求爪子动作: %s", action.c_str());
+  gripper_pub_->publish(msg);
 
-  if (!client->wait_for_service(std::chrono::seconds(1))) {
-    RCLCPP_ERROR(ros_node_->get_logger(), "无法连接到爪子服务！");
-    return BT::NodeStatus::FAILURE;
-  }
+  // 等待夹爪动作完成
+  rclcpp::sleep_for(std::chrono::milliseconds(500));
 
-  auto request = std::make_shared<std_srvs::srv::SetBool::Request>();
-  request->data = (action == "close"); // close 为 true, open 为 false
-
-  auto result = client->async_send_request(request);
-  // 同步等待结果
-  if (rclcpp::spin_until_future_complete(ros_node_, result) == rclcpp::FutureReturnCode::SUCCESS) {
-    return BT::NodeStatus::SUCCESS;
-  }
-  return BT::NodeStatus::FAILURE;
+  return BT::NodeStatus::SUCCESS;
 }
-}
+
+}  // namespace picking_system_core

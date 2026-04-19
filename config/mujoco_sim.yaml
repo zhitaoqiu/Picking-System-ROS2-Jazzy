@@ -1,0 +1,5 @@
+mujoco_bridge:
+  ros__parameters:
+    scene_xml: "simulation_assets/mujoco/franka_scene.xml"
+    use_viewer: false
+    publish_rate: 50.0
